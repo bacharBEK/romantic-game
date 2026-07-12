@@ -1,30 +1,65 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Romantic Game for Farah</title>
+  <title>Farah’s Romantic Journey</title>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; background: #f8f0f8; }
-    .choice { margin: 20px; padding: 10px; background: #ffe0e0; border-radius: 8px; cursor: pointer; }
+    body {
+      font-family: 'Georgia', serif;
+      text-align: center;
+      background: linear-gradient(to bottom, #ffdde1, #ee9ca7);
+      color: #4a2c2a;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      font-family: 'Brush Script MT', cursive;
+      font-size: 3em;
+      margin-top: 40px;
+    }
+    .choice {
+      margin: 20px;
+      padding: 15px;
+      background: #fff0f5;
+      border: 2px solid #e75480;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-size: 1.2em;
+    }
+    .choice:hover {
+      background: #ffe4e1;
+      transform: scale(1.05);
+    }
+    #game {
+      margin-top: 50px;
+    }
+    .fade {
+      animation: fadeIn 2s;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
   </style>
 </head>
 <body>
-  <h1>Welcome, Farah 🌹</h1>
-  <p>Let’s play a little romantic game...</p>
+  <h1>Farah’s Romantic Game 🌹</h1>
+  <p class="fade">Every choice you make brings us closer to a magical evening...</p>
 
   <div id="game"></div>
 
   <script>
     const steps = [
-      { text: "Choose your evening mood:", options: ["Relaxing", "Exciting"] },
-      { text: "Pick your setting:", options: ["By the sea", "In the city"] },
-      { text: "Final choice:", options: ["Mystery", "Romance"] }
+      { text: "Choose your dream evening:", options: ["Under the stars ✨", "By candlelight 🕯️"] },
+      { text: "Pick the mood:", options: ["Gentle romance 💕", "Playful mystery 🎭"] },
+      { text: "Final step:", options: ["Follow your heart ❤️", "Trust the surprise 🌌"] }
     ];
 
     let currentStep = 0;
 
     function showStep() {
       const step = steps[currentStep];
-      let html = `<p>${step.text}</p>`;
+      let html = `<p class="fade">${step.text}</p>`;
       step.options.forEach(opt => {
         html += `<div class="choice" onclick="nextStep()">${opt}</div>`;
       });
@@ -37,7 +72,7 @@
         showStep();
       } else {
         document.getElementById("game").innerHTML =
-          "<h2>✨ Surprise! ✨</h2><p>We’re going to Sud Restaurant, Lebanon, Monday at 8 PM 💕</p>";
+          "<h2 class='fade'>✨ Surprise! ✨</h2><p class='fade'>Farah, I’ve reserved us a romantic dinner at <b>Sud Restaurant, Lebanon</b> this Monday at 8 PM. 🌹</p>";
       }
     }
 

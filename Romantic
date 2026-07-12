@@ -1,47 +1,771 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Romantic Game for Farah</title>
-  <style>
-    body { font-family: Arial, sans-serif; text-align: center; background: #f8f0f8; }
-    .choice { margin: 20px; padding: 10px; background: #ffe0e0; border-radius: 8px; cursor: pointer; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farah's Romantic Evening</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;600&display=swap');
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Lato', sans-serif;
+    background: linear-gradient(135deg, #0d0221 0%, #1a0b2e 30%, #2d1b4e 60%, #1a0b2e 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #f5f0e8;
+    padding: 15px;
+    overflow-x: hidden;
+}
+.particles {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+.particle {
+    position: absolute;
+    width: 3px; height: 3px;
+    background: rgba(212, 175, 55, 0.4);
+    border-radius: 50%;
+    animation: floatParticle 8s infinite ease-in-out;
+}
+@keyframes floatParticle {
+    0%, 100% { transform: translateY(100vh) scale(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+}
+.game-card {
+    max-width: 520px;
+    width: 100%;
+    background: rgba(20, 10, 40, 0.92);
+    backdrop-filter: blur(20px);
+    border-radius: 28px;
+    padding: 36px 30px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    box-shadow: 0 0 60px rgba(212, 175, 55, 0.08), 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+.game-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #d4af37, #f4e4ba, #d4af37, transparent);
+}
+.scene { display: none; }
+.scene.active { display: block; animation: sceneEnter 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+@keyframes sceneEnter {
+    from { opacity: 0; transform: translateY(30px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2em;
+    text-align: center;
+    margin-bottom: 8px;
+    color: #f4e4ba;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+.subtitle {
+    text-align: center;
+    font-size: 0.85em;
+    color: rgba(212, 175, 55, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 24px;
+}
+.divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #d4af37, transparent);
+    margin: 0 auto 24px;
+}
+p {
+    font-size: 1.05em;
+    line-height: 1.75;
+    text-align: center;
+    margin-bottom: 24px;
+    color: #d8d0e0;
+    font-weight: 300;
+}
+.farah-name {
+    color: #f4e4ba;
+    font-weight: 600;
+    font-style: italic;
+}
+.deco-emoji {
+    font-size: 3em;
+    text-align: center;
+    display: block;
+    margin: 8px 0 16px;
+    filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.3));
+}
+.deco-emoji.pulse {
+    animation: gentlePulse 3s ease-in-out infinite;
+}
+@keyframes gentlePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+}
+.btn {
+    display: block;
+    width: 100%;
+    padding: 16px 22px;
+    margin: 10px 0;
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(74, 44, 106, 0.6), rgba(45, 27, 78, 0.6));
+    color: #f5f0e8;
+    font-size: 0.95em;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.35s ease;
+    font-family: 'Lato', sans-serif;
+    letter-spacing: 0.3px;
+    position: relative;
+    overflow: hidden;
+}
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212,175,55,0.08), transparent);
+    transition: left 0.5s;
+}
+.btn:hover::before { left: 100%; }
+.btn:hover {
+    transform: translateY(-2px);
+    border-color: rgba(212, 175, 55, 0.6);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3), 0 0 20px rgba(212, 175, 55, 0.1);
+    background: linear-gradient(135deg, rgba(90, 60, 122, 0.7), rgba(61, 43, 94, 0.7));
+}
+.btn-primary {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(180, 140, 40, 0.1));
+    border-color: rgba(212, 175, 55, 0.4);
+}
+.btn-primary:hover {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.25), rgba(180, 140, 40, 0.2));
+}
+.progress-wrap { margin-bottom: 28px; }
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7em;
+    color: rgba(212, 175, 55, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+}
+.progress-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    overflow: hidden;
+}
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #8b6914, #d4af37, #f4e4ba);
+    border-radius: 2px;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+.riddle-box {
+    background: rgba(74, 44, 106, 0.25);
+    border: 1px dashed rgba(212, 175, 55, 0.3);
+    border-radius: 16px;
+    padding: 22px;
+    margin: 18px 0;
+    position: relative;
+}
+.riddle-box::before {
+    content: '"';
+    position: absolute;
+    top: -10px; left: 20px;
+    font-family: 'Playfair Display', serif;
+    font-size: 3em;
+    color: rgba(212, 175, 55, 0.3);
+    line-height: 1;
+}
+.riddle-box p {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15em;
+    color: #e8e0d0;
+    font-style: italic;
+    line-height: 1.9;
+    margin-bottom: 0;
+}
+.riddle-question {
+    text-align: center;
+    color: #d4af37;
+    font-size: 0.9em;
+    margin-top: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+.mystery-box {
+    width: 100px; height: 100px;
+    background: linear-gradient(135deg, #c9a84c, #8b6914);
+    border-radius: 20px;
+    margin: 20px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.4em;
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.2), 0 10px 30px rgba(0,0,0,0.3);
+    position: relative;
+}
+.mystery-box::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 23px;
+    background: linear-gradient(135deg, rgba(212,175,55,0.3), transparent, rgba(212,175,55,0.3));
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+.mystery-box:hover::after { opacity: 1; }
+.mystery-box:hover {
+    transform: scale(1.08) rotate(2deg);
+    box-shadow: 0 0 50px rgba(212, 175, 55, 0.35);
+}
+.mystery-box.opened {
+    background: linear-gradient(135deg, #4ade80, #2d8a4e);
+    transform: scale(1.15) rotate(360deg);
+    box-shadow: 0 0 50px rgba(74, 222, 128, 0.3);
+}
+.mystery-reveal {
+    display: none;
+    text-align: center;
+    margin-top: 18px;
+    animation: fadeIn 0.6s ease;
+}
+.quiz-option {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin: 8px 0;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.95em;
+    color: #d8d0e0;
+}
+.quiz-option:hover {
+    border-color: rgba(212, 175, 55, 0.4);
+    background: rgba(212, 175, 55, 0.06);
+    transform: translateX(4px);
+}
+.quiz-option.correct {
+    border-color: #4ade80;
+    background: rgba(74, 222, 128, 0.1);
+}
+.quiz-option.wrong {
+    border-color: #f87171;
+    background: rgba(248, 113, 113, 0.1);
+}
+.date-card {
+    background: rgba(212, 175, 55, 0.06);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    border-radius: 20px;
+    padding: 26px 22px;
+    margin: 22px 0;
+    position: relative;
+}
+.date-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 40px; height: 3px;
+    background: linear-gradient(90deg, transparent, #d4af37, transparent);
+    border-radius: 2px;
+}
+.date-card h3 {
+    font-family: 'Playfair Display', serif;
+    color: #f4e4ba;
+    text-align: center;
+    margin-bottom: 18px;
+    font-size: 1.3em;
+    font-weight: 600;
+}
+.date-detail {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.date-detail:last-child { border-bottom: none; }
+.date-detail .icon {
+    font-size: 1.1em;
+    min-width: 24px;
+    text-align: center;
+}
+.date-detail .label {
+    color: rgba(212, 175, 55, 0.8);
+    font-weight: 600;
+    font-size: 0.85em;
+}
+.date-detail .value {
+    color: #e8e0d8;
+    font-size: 0.9em;
+    font-weight: 300;
+}
+.response-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 24px;
+}
+.response-row .btn {
+    width: auto;
+    padding: 14px 28px;
+    flex: 1;
+}
+.btn-yes {
+    background: linear-gradient(135deg, rgba(45, 138, 78, 0.8), rgba(60, 179, 113, 0.8));
+    border-color: rgba(74, 222, 128, 0.4);
+    color: #fff;
+}
+.btn-yes:hover {
+    background: linear-gradient(135deg, rgba(60, 179, 113, 0.9), rgba(45, 138, 78, 0.9));
+    box-shadow: 0 8px 30px rgba(74, 222, 128, 0.2);
+}
+.fun-fact {
+    background: rgba(255,255,255,0.03);
+    border-left: 2px solid rgba(212, 175, 55, 0.4);
+    padding: 12px 16px;
+    margin: 16px 0;
+    border-radius: 0 12px 12px 0;
+    font-style: italic;
+    color: #b8b0c8;
+    font-size: 0.88em;
+    line-height: 1.6;
+}
+.success-emoji {
+    font-size: 3.5em;
+    text-align: center;
+    display: block;
+    margin: 10px 0;
+    animation: heartBeat 1.5s ease-in-out infinite;
+}
+@keyframes heartBeat {
+    0%, 100% { transform: scale(1); }
+    14% { transform: scale(1.1); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.1); }
+    70% { transform: scale(1); }
+}
+.confetti-piece {
+    position: fixed;
+    z-index: 9999;
+    pointer-events: none;
+    border-radius: 50%;
+}
+.badges {
+    text-align: center;
+    margin: 14px 0;
+}
+.badge {
+    display: inline-block;
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 0.8em;
+    color: #d4af37;
+    margin: 3px;
+    letter-spacing: 0.5px;
+}
+.hidden { display: none; }
+.final-question {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3em;
+    color: #f4e4ba;
+    text-align: center;
+    margin: 20px 0;
+    font-style: italic;
+}
+.whatsapp-notify {
+    background: rgba(37, 211, 102, 0.1);
+    border: 1px solid rgba(37, 211, 102, 0.3);
+    border-radius: 14px;
+    padding: 16px;
+    margin-top: 20px;
+    text-align: center;
+}
+.whatsapp-notify p {
+    color: #4ade80;
+    font-size: 0.95em;
+    margin-bottom: 12px;
+}
+.whatsapp-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #25d366, #128c7e);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 24px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95em;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+}
+.whatsapp-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
+}
+</style>
+<base target="_blank">
 </head>
 <body>
-  <h1>Welcome, Farah 🌹</h1>
-  <p>Let’s play a little romantic game...</p>
+<div class="particles" id="particles"></div>
 
-  <div id="game"></div>
+<div class="game-card">
+    <div class="progress-wrap">
+        <div class="progress-label">
+            <span>Your Evening Awaits</span>
+            <span id="progressText">Step 1 of 6</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress"></div>
+        </div>
+    </div>
 
-  <script>
-    const steps = [
-      { text: "Choose your evening mood:", options: ["Relaxing", "Exciting"] },
-      { text: "Pick your setting:", options: ["By the sea", "In the city"] },
-      { text: "Final choice:", options: ["Mystery", "Romance"] }
-    ];
+    <div class="scene active" id="scene1">
+        <span class="deco-emoji">🥂</span>
+        <h1>A Special Invitation</h1>
+        <div class="divider"></div>
+        <p>Good evening, <span class="farah-name">Farah</span>.<br><br>I have been wanting to ask you something... but not in the ordinary way.<br><br>There is a place in Beirut where the candlelight dances, the wine breathes, and every bite tells a story. To discover it, you must journey through a few delightful mysteries.<br><br>Shall we begin?</p>
+        <button class="btn btn-primary" onclick="goTo(2)">✨ I am enchanted. Continue.</button>
+        <button class="btn" onclick="goTo(2)">🌹 Lead the way.</button>
+    </div>
 
-    let currentStep = 0;
+    <div class="scene" id="scene2">
+        <span class="deco-emoji">🕯️</span>
+        <h1>The First Mystery</h1>
+        <div class="divider"></div>
+        <div class="riddle-box">
+            <p>"Where crystal meets candlelight,<br>And flavors take gentle flight.<br>Not merely a meal, but art on a plate,<br>An evening designed to captivate."</p>
+        </div>
+        <p class="riddle-question">What awaits you?</p>
+        <button class="btn" onclick="riddleAnswer('dining')">🍷 An elegant dinner experience</button>
+        <button class="btn" onclick="riddleAnswer('movie')">🎬 A cinema evening</button>
+        <button class="btn" onclick="riddleAnswer('walk')">🌙 A moonlit stroll</button>
+    </div>
 
-    function showStep() {
-      const step = steps[currentStep];
-      let html = `<p>${step.text}</p>`;
-      step.options.forEach(opt => {
-        html += `<div class="choice" onclick="nextStep()">${opt}</div>`;
-      });
-      document.getElementById("game").innerHTML = html;
+    <div class="scene" id="scene2b">
+        <span class="deco-emoji">🌟</span>
+        <h1>Exquisite Taste</h1>
+        <div class="divider"></div>
+        <p>You have a refined palate, <span class="farah-name">Farah</span>.<br><br>An elegant dinner it shall be — where every course is a conversation and every sip is a memory in the making.<br><br>But where, you wonder? The next mystery holds the key.</p>
+        <div class="fun-fact">
+            💫 Beirut's dining scene blends centuries of Lebanese culinary tradition with the sophistication of modern gastronomy.
+        </div>
+        <button class="btn btn-primary" onclick="goTo(3)">🔑 Unlock the next mystery</button>
+    </div>
+
+    <div class="scene" id="scene2c">
+        <span class="deco-emoji">💫</span>
+        <h1>A Lovely Thought</h1>
+        <div class="divider"></div>
+        <p>Those are wonderful ideas for another time...<br><br>But tonight, the answer is <span style="color:#f4e4ba; font-weight:600;">an elegant dinner experience</span> — candlelight, fine wine, and flavors that linger like a beautiful dream.<br><br>The journey continues regardless. Shall we proceed?</p>
+        <button class="btn btn-primary" onclick="goTo(3)">🌹 Onward, then</button>
+    </div>
+
+    <div class="scene" id="scene3">
+        <span class="deco-emoji">🎁</span>
+        <h1>The Golden Enigma</h1>
+        <div class="divider"></div>
+        <p>Before you lies a golden box, sealed with curiosity. Within it rests the name of our destination.<br><br>Tap it gently, and let the secret unfold...</p>
+        <div class="mystery-box" id="mysteryBox" onclick="openMystery()">📦</div>
+        <div class="mystery-reveal" id="mysteryReveal">
+            <p style="color:#f4e4ba; font-size:1.1em; font-style:italic; font-family:'Playfair Display',serif;">"Where Mediterranean soul meets modern grace"</p>
+            <button class="btn btn-primary" onclick="goTo(4)" style="margin-top:16px;">🌟 How intriguing...</button>
+        </div>
+    </div>
+
+    <div class="scene" id="scene4">
+        <span class="deco-emoji">🍷</span>
+        <h1>The Test of Refinement</h1>
+        <div class="divider"></div>
+        <p>One of these does not belong in the world we are about to enter. Can you spot the imposter?</p>
+        <div class="quiz-option" onclick="quizAnswer(this, false)">A) Hand-selected wines and artisan cocktails</div>
+        <div class="quiz-option" onclick="quizAnswer(this, false)">B) Fresh-caught seafood and prime cuts</div>
+        <div class="quiz-option" onclick="quizAnswer(this, true)">C) Drive-thru service and paper napkins 🍟</div>
+        <div class="quiz-option" onclick="quizAnswer(this, false)">D) Chef's tasting menus and delicate pastries</div>
+        <div id="quizNext" class="hidden" style="margin-top:16px;">
+            <button class="btn btn-primary" onclick="goTo(5)">✨ Reveal our destination</button>
+        </div>
+    </div>
+
+    <div class="scene" id="scene5">
+        <span class="deco-emoji pulse">🍽️</span>
+        <h1>The Grand Reveal</h1>
+        <div class="divider"></div>
+        <p style="font-family:'Playfair Display',serif; font-size:1.4em; color:#f4e4ba; font-style:italic;">We dine at... SUD</p>
+        <div class="badges">
+            <span class="badge">📍 Beirut</span>
+            <span class="badge">🍷 Fine Dining</span>
+            <span class="badge">🕯️ Intimate Ambiance</span>
+        </div>
+        <p><span class="farah-name">Farah</span>, Sud is where Beirut's culinary artistry reaches its peak. Mediterranean flavors reimagined with contemporary elegance. Candlelit tables, curated wines, and an atmosphere that turns dinner into poetry.<br><br>This is not just a meal. This is an experience crafted for two.</p>
+        <div class="fun-fact">
+            💫 Sud is renowned for transforming Lebanese culinary heritage into contemporary masterpieces — each dish is both a tribute and a revelation.
+        </div>
+        <button class="btn btn-primary" onclick="goTo(6)">🌹 I am captivated</button>
+    </div>
+
+    <div class="scene" id="scene6">
+        <span class="deco-emoji">🌙</span>
+        <h1>The Evening's Essence</h1>
+        <div class="divider"></div>
+        <p>Every great evening has its own soul. What shall ours be?</p>
+        <button class="btn" onclick="chooseVibe('romantic')">🕯️ Romance — Soft candlelight, whispered conversations, shared dessert</button>
+        <button class="btn" onclick="chooseVibe('discovery')">🔥 Discovery — Let the chef guide us, course by surprising course</button>
+        <button class="btn" onclick="chooseVibe('celebration')">🥂 Celebration — The full experience: wine pairings, every course, no regrets</button>
+    </div>
+
+    <div class="scene" id="scene7">
+        <span class="deco-emoji">💌</span>
+        <h1>Your Invitation</h1>
+        <div class="divider"></div>
+        <p><span class="farah-name">Farah</span>, the evening is set. Here is what awaits:</p>
+        <div class="date-card">
+            <h3>An Evening at Sud</h3>
+            <div class="date-detail">
+                <span class="icon">📍</span>
+                <div>
+                    <div class="label">Destination</div>
+                    <div class="value">Sud Restaurant, Beirut</div>
+                </div>
+            </div>
+            <div class="date-detail">
+                <span class="icon">📅</span>
+                <div>
+                    <div class="label">When</div>
+                    <div class="value">Monday at 8:00 PM</div>
+                </div>
+            </div>
+            <div class="date-detail">
+                <span class="icon">✨</span>
+                <div>
+                    <div class="label">The Mood</div>
+                    <div class="value" id="vibeDisplay">Mediterranean elegance, candlelit ambiance, unforgettable flavors</div>
+                </div>
+            </div>
+            <div class="date-detail">
+                <span class="icon">🍷</span>
+                <div>
+                    <div class="label">The Experience</div>
+                    <div class="value">Curated wines, artisan courses, and conversation that lingers</div>
+                </div>
+            </div>
+            <div class="date-detail">
+                <span class="icon">🎵</span>
+                <div>
+                    <div class="label">The Ambiance</div>
+                    <div class="value">Soft melodies, warm glow, intimate setting</div>
+                </div>
+            </div>
+            <div class="date-detail">
+                <span class="icon">✨</span>
+                <div>
+                    <div class="label">Dress</div>
+                    <div class="value">Elegant — you will be the most beautiful woman there</div>
+                </div>
+            </div>
+        </div>
+        <p class="final-question">Will you honor me with your company, Farah?</p>
+        <div class="response-row">
+            <button class="btn btn-yes" onclick="accept()">Yes, I will be there 💚</button>
+            <button class="btn btn-yes" onclick="accept()">Absolutely 🌹</button>
+        </div>
+    </div>
+
+    <div class="scene" id="success">
+        <span class="success-emoji">🥂</span>
+        <h1>She Said Yes</h1>
+        <div class="divider"></div>
+        <p style="font-size:1.1em;"><span class="farah-name">Farah</span> has accepted.<br><br>Monday at 8:00 PM. Sud. A table for two beneath the warm glow of candlelight.<br><br>I shall handle the reservation and arrive promptly to escort you. Until then, I will be counting the moments. 🌙</p>
+        <div style="text-align:center; font-size:2em; margin-top:24px;">🍷❤️🍽️</div>
+        <p style="text-align:center; color:#d4af37; font-family:'Playfair Display',serif; font-style:italic; margin-top:18px; font-size:1.1em;">See you Monday, Farah. 🌹</p>
+
+        <div class="whatsapp-notify">
+            <p>✅ Game completed! Send confirmation to your phone?</p>
+            <a class="whatsapp-btn" id="whatsappLink" href="#" target="_blank">📲 Send WhatsApp Confirmation</a>
+        </div>
+    </div>
+</div>
+
+<script>
+var particlesContainer = document.getElementById('particles');
+for (var i = 0; i < 25; i++) {
+    var p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDelay = Math.random() * 8 + 's';
+    p.style.animationDuration = (Math.random() * 6 + 6) + 's';
+    particlesContainer.appendChild(p);
+}
+
+var currentScene = 1;
+var totalScenes = 7;
+
+function updateProgress() {
+    var fill = document.getElementById('progress');
+    var text = document.getElementById('progressText');
+    if (fill) {
+        fill.style.width = (currentScene / totalScenes * 100) + '%';
     }
-
-    function nextStep() {
-      currentStep++;
-      if (currentStep < steps.length) {
-        showStep();
-      } else {
-        document.getElementById("game").innerHTML =
-          "<h2>✨ Surprise! ✨</h2><p>We’re going to Sud Restaurant, Lebanon, Monday at 8 PM 💕</p>";
-      }
+    if (text) {
+        text.textContent = 'Step ' + currentScene + ' of ' + totalScenes;
     }
+}
 
-    showStep();
-  </script>
+function goTo(num) {
+    var scenes = document.querySelectorAll('.scene');
+    for (var i = 0; i < scenes.length; i++) {
+        scenes[i].classList.remove('active');
+    }
+    var target = document.getElementById('scene' + num);
+    if (target) {
+        target.classList.add('active');
+    }
+    currentScene = num;
+    updateProgress();
+}
+
+function riddleAnswer(answer) {
+    if (answer === 'dining') {
+        goTo('2b');
+    } else {
+        goTo('2c');
+    }
+}
+
+function openMystery() {
+    var box = document.getElementById('mysteryBox');
+    var reveal = document.getElementById('mysteryReveal');
+    if (box) {
+        box.innerHTML = '🍷';
+        box.classList.add('opened');
+    }
+    if (reveal) {
+        reveal.style.display = 'block';
+    }
+    spawnConfetti(15);
+}
+
+function quizAnswer(element, isCorrect) {
+    var options = document.querySelectorAll('.quiz-option');
+    for (var i = 0; i < options.length; i++) {
+        options[i].onclick = null;
+        options[i].style.cursor = 'default';
+    }
+    if (isCorrect) {
+        element.classList.add('correct');
+        element.innerHTML = element.innerHTML + ' <span style="color:#4ade80;">✓ Exactly — Sud is refined dining, never ordinary.</span>';
+    } else {
+        element.classList.add('wrong');
+        element.innerHTML = element.innerHTML + ' <span style="color:#f87171;">✗ That belongs in our world.</span>';
+        options[2].classList.add('correct');
+    }
+    var next = document.getElementById('quizNext');
+    if (next) {
+        next.classList.remove('hidden');
+    }
+}
+
+function chooseVibe(vibe) {
+    var text = 'Mediterranean elegance, candlelit ambiance, unforgettable flavors';
+    if (vibe === 'romantic') {
+        text = 'Soft candlelight, whispered conversations, and a shared dessert beneath dimmed lights 🕯️';
+    } else if (vibe === 'discovery') {
+        text = 'Course after course of surprises, guided by the chef's vision and our curiosity 🔥';
+    } else if (vibe === 'celebration') {
+        text = 'Wine pairings with every course, indulgence without restraint, and memories to keep 🥂';
+    }
+    var display = document.getElementById('vibeDisplay');
+    if (display) {
+        display.textContent = text;
+    }
+    goTo(7);
+}
+
+function accept() {
+    var scenes = document.querySelectorAll('.scene');
+    for (var i = 0; i < scenes.length; i++) {
+        scenes[i].classList.remove('active');
+    }
+    var success = document.getElementById('success');
+    if (success) {
+        success.classList.add('active');
+    }
+    spawnConfetti(60);
+    setTimeout(function() { spawnConfetti(40); }, 400);
+    setTimeout(function() { spawnConfetti(40); }, 800);
+
+    // Set up WhatsApp link
+    var phone = '96176765657';
+    var message = encodeURIComponent('🎉 Farah just completed the game and said YES!
+
+📅 Date confirmed: Monday at 8:00 PM
+📍 Location: Sud Restaurant, Beirut
+
+She is in! 🥂');
+    var link = document.getElementById('whatsappLink');
+    if (link) {
+        link.href = 'https://wa.me/' + phone + '?text=' + message;
+    }
+}
+
+function spawnConfetti(count) {
+    var colors = ['#d4af37', '#f4e4ba', '#4ade80', '#f87171', '#ffffff', '#c084fc', '#60a5fa'];
+    for (var i = 0; i < count; i++) {
+        var conf = document.createElement('div');
+        conf.className = 'confetti-piece';
+        conf.style.left = Math.random() * 100 + 'vw';
+        conf.style.top = '-10px';
+        var size = Math.random() * 6 + 4;
+        conf.style.width = size + 'px';
+        conf.style.height = size + 'px';
+        conf.style.background = colors[Math.floor(Math.random() * colors.length)];
+        conf.style.opacity = Math.random() * 0.5 + 0.5;
+        document.body.appendChild(conf);
+
+        var duration = Math.random() * 2 + 2.5;
+        var rotation = Math.random() * 720;
+        var endY = window.innerHeight + 50;
+
+        conf.animate([
+            { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+            { transform: 'translateY(' + endY + 'px) rotate(' + rotation + 'deg)', opacity: 0 }
+        ], {
+            duration: duration * 1000,
+            easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+        });
+
+        setTimeout(function(c) { c.remove(); }, duration * 1000, conf);
+    }
+}
+
+updateProgress();
+</script>
 </body>
 </html>

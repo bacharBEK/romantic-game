@@ -88,7 +88,19 @@
     }
     .option-btn:hover { background: rgba(255,255,255,0.2); }
     #particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+    .datetime-badge {
+      display: inline-block;
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 12px;
+      padding: 10px 24px;
+      margin: 15px 0;
+      font-size: 1.1rem;
+      color: #d4af37;
+      letter-spacing: 1px;
+    }
   </style>
+<base target="_blank">
 </head>
 <body>
 
@@ -137,7 +149,12 @@
     <h2 style="font-size: 2rem; margin-bottom: 5px;">Farah,</h2>
     <div class="card">
       <div style="position: absolute; top: -10px; right: -10px; font-size: 4rem; opacity: 0.1;">🌙</div>
-      <p style="font-size: 1.3rem; line-height: 1.6; margin-bottom: 20px;">Will you join me for dinner at<br><span style="color: #d4af37; font-size: 1.6rem; font-weight: bold;">Sud Lebanon</span>?</p>
+      <p style="font-size: 1.3rem; line-height: 1.6; margin-bottom: 15px;">Will you join me for dinner at<br><span style="color: #d4af37; font-size: 1.6rem; font-weight: bold;">Sud Lebanon</span>?</p>
+
+      <div class="datetime-badge">
+        📅 Monday at 8:00 PM
+      </div>
+
       <div style="display: flex; justify-content: center; gap: 8px; margin: 15px 0;">
         <span style="font-size: 1.4rem;">🍽️</span>
         <span style="font-size: 1.4rem;">🍷</span>
@@ -146,7 +163,7 @@
       </div>
       <p style="font-size: 0.95rem; opacity: 0.8; margin-top: 15px;">An evening of Lebanese flavors,<br>warm conversation, and you.</p>
     </div>
-    <a href="https://wa.me/96176765657?text=Yes!%20I'd%20love%20to%20join%20you%20for%20dinner%20at%20Sud%20Lebanon%20🌹" target="_blank" class="whatsapp-btn">
+    <a href="https://wa.me/96176765657?text=Yes!%20I'd%20love%20to%20join%20you%20for%20dinner%20at%20Sud%20Lebanon%20this%20Monday%20at%208%20PM%20🌹" target="_blank" class="whatsapp-btn">
       💬 Confirm on WhatsApp
     </a>
     <p style="font-size: 0.85rem; opacity: 0.6; margin-top: 10px;">+961 76 765 657</p>
@@ -176,7 +193,7 @@
         clickedPetals.add(idx);
         el.classList.add('bloomed');
         el.style.opacity = '1';
-        
+
         const sparkle = document.createElement('div');
         sparkle.innerHTML = '✨';
         sparkle.style.position = 'absolute';
@@ -225,12 +242,12 @@
       p.style.pointerEvents = 'none';
       p.style.zIndex = '0';
       document.getElementById('particles').appendChild(p);
-      
+
       setTimeout(() => {
         p.style.top = '-50px';
         p.style.transform = 'rotate(' + (Math.random() * 360) + 'deg)';
       }, 100);
-      
+
       setTimeout(() => p.remove(), 10000);
     }
 

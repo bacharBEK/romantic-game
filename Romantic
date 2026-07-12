@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Romantic Game for Farah</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; background: #f8f0f8; }
+    .choice { margin: 20px; padding: 10px; background: #ffe0e0; border-radius: 8px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Welcome, Farah 🌹</h1>
+  <p>Let’s play a little romantic game...</p>
+
+  <div id="game"></div>
+
+  <script>
+    const steps = [
+      { text: "Choose your evening mood:", options: ["Relaxing", "Exciting"] },
+      { text: "Pick your setting:", options: ["By the sea", "In the city"] },
+      { text: "Final choice:", options: ["Mystery", "Romance"] }
+    ];
+
+    let currentStep = 0;
+
+    function showStep() {
+      const step = steps[currentStep];
+      let html = `<p>${step.text}</p>`;
+      step.options.forEach(opt => {
+        html += `<div class="choice" onclick="nextStep()">${opt}</div>`;
+      });
+      document.getElementById("game").innerHTML = html;
+    }
+
+    function nextStep() {
+      currentStep++;
+      if (currentStep < steps.length) {
+        showStep();
+      } else {
+        document.getElementById("game").innerHTML =
+          "<h2>✨ Surprise! ✨</h2><p>We’re going to Sud Restaurant, Lebanon, Monday at 8 PM 💕</p>";
+      }
+    }
+
+    showStep();
+  </script>
+</body>
+</html>
